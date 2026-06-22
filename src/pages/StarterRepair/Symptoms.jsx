@@ -1,0 +1,62 @@
+﻿const SYMPTOMS = [
+  
+]
+
+const Symptoms = () => (
+  <section className="sr-symptoms">
+    <div className="line_symptoms">
+        <img
+          src="/assets/line_starter.png"
+          />
+      </div>
+    <div className="container sr-symptoms__inner">
+      
+      {/* Left: symptom list container_sybpomes */}
+      <div className="sr-symptoms__list-wrap">
+        <div className="sr-symptoms__carousel">
+          <div className="sr-symptoms__dots">
+            <span className="sr-symptoms__dot sr-symptoms__dot--active" />
+            <span className="sr-symptoms__dot" />
+            <span className="sr-symptoms__dot" />
+          </div>
+          <div className="sr-symptoms__lines">
+            <span className="sr-symptoms__line" />
+            <span className="sr-symptoms__line" />
+          </div>
+        </div>
+
+        <ul className="sr-symptoms__items">
+          {SYMPTOMS.map((s) => (
+            <li className="sr-symptoms__item" key={s}>
+              <span className="sr-symptoms__bullet" aria-hidden="true" />
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Center: photo */}
+      <div className="sr-symptoms__photo-wrap1">
+        <img
+          className="sr-symptoms__photo1"
+          src="/assets/starter_rep.png"
+          alt="Диагностика стартера"
+          loading="lazy"
+        />
+      </div>
+      <div className="sr_syptoms_box">
+          <div className="sr-syptomes_ikon">
+             <img
+                src="/assets/finger_service.svg"
+            />
+          </div>
+          <p className="sr-symptoms__text_serv">
+            Так как причины поломки данного узла могут быть различной степени сложности, мы рекомендуем не затягивать с визитом в автосервис при появлении первых признаков неисправностей. Не всегда возможно восстановление работоспособности. Иногда целесообразнее осуществить замену автомобильного стартера, которую также готовы осуществить специалисты нашего центра.
+          </p>
+        </div>
+      
+    </div>
+  </section>
+)
+
+export default Symptoms

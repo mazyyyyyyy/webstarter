@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model PriceRow {
+  id        Int      @id @default(autoincrement())
+  service   String   // 'starter' | 'generator' | 'conditioning'
+  tableType String   // 'main' | 'vaz'
+  col0      String   @default("")
+  col1      String   @default("")
+  col2      String   @default("")
+  col3      String   @default("")
+  col4      String   @default("")
+  col5      String   @default("")
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  parts     Part[]
+}
+
+model Part {
+  id            Int       @id @default(autoincrement())
+  name          String
+  description   String    @default("")
+  price         Int       @default(0)
+  inStock       Boolean   @default(true)
+  images        String[]
+  article       String    @default("")
+  guarantee     String    @default("6 месяцев")
+  delivery      String    @default("по всей России")
+  returns       String    @default("14 дней")
+  specs         Json      @default("[]")
+  benefits      Json      @default("[]")
+  compatibility Json      @default("[]")
+  sortOrder     Int       @default(0)
+  categoryId    Int?
+  category      Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
