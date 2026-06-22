@@ -1,3 +1,5 @@
+import { useCart } from '../../context/CartContext'
+
 const CartIcon = () => <img src="/assets/Shopikon.svg" width={20} />
 
 const BADGES = [
@@ -50,6 +52,8 @@ const FIXED_SPECS = [
 const val = v => (v && String(v).trim()) ? String(v) : '—'
 
 const ProductInfo = ({ product }) => {
+  const { addItem } = useCart()
+
   const getSpec = label => {
     const found = product.specs.find(s => s.label === label)
     return val(found?.value)
@@ -79,7 +83,10 @@ const ProductInfo = ({ product }) => {
       </div>
 
       <div className="pc-info__actions">
-        <button className="pc-info__btn-cart">
+        <button
+          className="pc-info__btn-cart"
+          onClick={() => addItem({ id: product.id, name: product.name, price: product.price, image: product.images?.[0] })}
+        >
           <CartIcon />
           Добавить в корзину
         </button>

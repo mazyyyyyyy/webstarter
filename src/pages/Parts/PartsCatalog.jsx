@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useCart } from '../../context/CartContext'
 
 const CartIcon = () => (
   <img src="/assets/Shopikon.svg" width={20} />
@@ -38,6 +39,7 @@ function getPageItems(page, total) {
 const PER_PAGE = 12
 
 const PartsCatalog = () => {
+  const { addItem } = useCart()
   const [products, setProducts]     = useState([])
   const [search, setSearch]         = useState('')
   const [loading, setLoading]       = useState(true)
@@ -106,7 +108,11 @@ const PartsCatalog = () => {
               </Link>
               <div className="parts-card__footer">
                 <span className="parts-card__price">{p.price.toLocaleString('ru-RU')}&nbsp;₽</span>
-                <button className="parts-card__btn" aria-label="Добавить в корзину">
+                <button
+                  className="parts-card__btn"
+                  aria-label="Добавить в корзину"
+                  onClick={() => addItem({ id: p.id, name: p.name, price: p.price, image: p.images?.[0] })}
+                >
                   <CartIcon />
                 </button>
               </div>

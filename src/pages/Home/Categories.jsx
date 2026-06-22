@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useCart } from '../../context/CartContext'
 
 const CartIcon = () => (
   <img src="/assets/Shopikon.svg" width={24} alt="" />
@@ -18,6 +19,7 @@ const StarRow = () => (
 const PAGE_SIZE = 3
 
 const Categories = () => {
+  const { addItem } = useCart()
   const [cats,    setCats]    = useState([])
   const [parts,   setParts]   = useState([])
   const [active,  setActive]  = useState(null)
@@ -114,7 +116,14 @@ const Categories = () => {
                         <h3 className="product-card__name">{p.name}</h3>
                         <div className="product-card__footer">
                           <span className="product-card__price">{p.price.toLocaleString('ru-RU')}&nbsp;₽</span>
-                          <button className="btn-cart" aria-label="В корзину" onClick={e => e.preventDefault()}>
+                          <button
+                            className="btn-cart"
+                            aria-label="В корзину"
+                            onClick={e => {
+                              e.preventDefault()
+                              addItem({ id: p.id, name: p.name, price: p.price, image: p.images?.[0] })
+                            }}
+                          >
                             <CartIcon />
                           </button>
                         </div>

@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Header      from './components/Header'
 import Navigation  from './components/Navigation'
 import Footer      from './components/Footer'
+import FloatingCart from './components/FloatingCart'
 
 import Home            from './pages/Home/Home'
 import StarterRepair   from './pages/StarterRepair/StarterRepair'
@@ -46,6 +47,7 @@ const App = () => {
       </main>
 
       {!isAdmin && <Footer />}
+      {!isAdmin && <FloatingCart />}
     </>
   )
 }
