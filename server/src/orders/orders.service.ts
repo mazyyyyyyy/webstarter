@@ -6,8 +6,10 @@ export class OrdersService {
 
   // Заглушка: пока без реального Telegram-бота, просто логируем заказ.
   // Когда бот будет готов — здесь отправка сообщения через Telegram Bot API.
-  async notify(order: { items: any[]; totalPrice: number }) {
-    this.logger.log(`Новый заказ на ${order.totalPrice} ₽: ${JSON.stringify(order.items)}`)
+  async notify(order: { items: any[]; totalPrice: number; name: string; phone: string }) {
+    this.logger.log(
+      `Новый заказ от ${order.name} (${order.phone}) на ${order.totalPrice} ₽: ${JSON.stringify(order.items)}`,
+    )
     return { ok: true }
   }
 }

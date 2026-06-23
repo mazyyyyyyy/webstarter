@@ -32,9 +32,10 @@ const Header = () => {
       <button
             className="header-cta"
             onClick={() => setIsModalOpen(true)}
+            aria-label="Позвонить нам"
           >
             <PhoneIcon />
-            Позвонить нам!
+            <span className="header-cta__label">Позвонить нам!</span>
       </button>
 
 

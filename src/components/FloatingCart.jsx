@@ -13,20 +13,30 @@ const FloatingCart = () => {
   const { items, removeItem, setQty, clear, totalCount, totalPrice } = useCart()
   const [isOpen, setIsOpen] = useState(false)
   const [status, setStatus] = useState('idle') // idle | sending | done
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [error, setError] = useState('')
 
   const handleOrder = async () => {
+    if (!name.trim() || !phone.trim()) {
+      setError('Укажите имя и телефон')
+      return
+    }
+    setError('')
     setStatus('sending')
     try {
       await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, totalPrice }),
+        body: JSON.stringify({ items, totalPrice, name: name.trim(), phone: phone.trim() }),
       })
     } catch {
       // заглушка: даже если бек недоступен, считаем заказ принятым
     }
     setStatus('done')
     clear()
+    setName('')
+    setPhone('')
     setTimeout(() => { setStatus('idle'); setIsOpen(false) }, 2500)
   }
 
@@ -74,6 +84,25 @@ const FloatingCart = () => {
                 <span>Итого:</span>
                 <span>{totalPrice.toLocaleString('ru-RU')}&nbsp;₽</span>
               </div>
+
+              <div className="floating-cart__contact">
+                <input
+                  className="floating-cart__input"
+                  type="text"
+                  placeholder="Ваше имя"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+                <input
+                  className="floating-cart__input"
+                  type="tel"
+                  placeholder="Телефон"
+                  value={phone}
+                  onChange={e => setPhone(e.target.value)}
+                />
+              </div>
+
+              {error && <div className="floating-cart__error">{error}</div>}
 
               <button
                 className="floating-cart__order-btn"

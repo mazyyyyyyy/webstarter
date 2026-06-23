@@ -448,9 +448,10 @@ button {
   position: absolute;
   right: 0;
   top: 0;
+  height: 100%;
 
   /* fits from 211px left per Figma (node 33:9) */
-  
+
   object-fit: cover;
   object-position: center top;
   pointer-events: none;
@@ -1161,6 +1162,12 @@ button {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .feature-item:first-child,
+  .feature-item:last-child {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
   .feature-item:nth-child(2) {
     border-right: none;
   }
@@ -1215,31 +1222,43 @@ button {
   }
 
   .site-header .container {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-areas: "logo contact" "cta  cta";
-    row-gap: 12px;
-    column-gap: 12px;
-    height: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
     align-items: center;
-    flex-wrap: unset;
+    height: auto;
+    gap: 12px;
   }
 
-  .header-logo      { grid-area: logo; }
-  .header-contact   { grid-area: contact; text-align: right; margin-left: 0; align-items: flex-end; }
-  .header-cta       { grid-area: cta; width: 100%; justify-content: center; height: 48px; font-size: 16px; padding: 0 20px; }
+  /* Номер и часы работы спрятаны на мобильном — звонок теперь через круглую кнопку */
+  .header-contact { display: none; }
 
-  /* Уменьшаем логотип */
-  .header-logo img  { width: 160px; height: auto; }
+  /* Логотип */
+  .header-logo img  { width: 200px; height: auto; }
   .header-logo__starter,
   .header-logo__service { font-size: 18px; }
   .header-logo__text    { font-size: 12px; white-space: normal; }
 
-  /* Контакты */
-  .header-contact__phone { gap: 6px; }
-  .header-contact__number { font-size: 16px; }
-  .header-contact__hours  { font-size: 12px; padding-left: 0; }
-  .header-contact__phone img { width: 18px; height: 18px; }
+  /* CTA становится круглой кнопкой-иконкой */
+  .header-cta {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .header-cta img { width: 22px; height: 21px; }
+
+  .header-cta__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 
   /* Nav — управляется через hamburger */
   .site-nav { height: auto; }
@@ -1314,7 +1333,13 @@ button {
     padding: 24px 20px;
   }
 
+  .feature-item:first-child {
+    padding-left: 20px;
+  }
+
   .feature-item:last-child {
+    padding-left: 20px;
+    padding-right: 20px;
     border-bottom: none;
   }
 
@@ -1848,7 +1873,13 @@ button {
   width: 110px;
   height: 90px;
 }
-.sr-benefits__icon svg { width: 100%; height: 100%; }
+.sr-benefits__icon svg,
+.sr-benefits__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
 
 .sr-benefits__text {
   font-size: 18px;
@@ -2264,6 +2295,11 @@ button {
 
   color: #000;
   text-transform: uppercase;
+}
+
+/* Вертикальный список для мобильной раскладки — виден только до 1100px */
+.sr-diagnostics__mobile-list {
+  display: none;
 }
 
 .sr-price__notes p {
@@ -3911,12 +3947,17 @@ button {
   .sr-benefits__card {
     width: 100% !important;
     padding: 28px 20px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
   }
   .sr-benefits__icon { width: 72px !important; height: 72px !important; }
+  .sr-benefits__text { font-size: 16px !important; line-height: 1.6 !important; }
 
   /* ── Service photo grid ── */
   .sr-service__grid {
-    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+    margin: 10px;
     flex-wrap: wrap !important;
     flex-direction: column !important;
     gap: 16px !important;
@@ -4027,23 +4068,58 @@ button {
   .sr-price__notes p { padding: 16px 14px; flex-direction: row; gap: 12px; align-items: flex-start; }
   .sr-price__notes p img { flex-shrink: 0; width: 36px !important; }
 
-  /* ── Diagnostics — horizontal scroll ── */
+  /* ── Diagnostics — вертикальный список: иконка слева, текст справа ── */
   .sr-diagnostics__title { font-size: 22px !important; white-space: normal; }
-  .sr-diagnostics__track { overflow-x: auto; padding-bottom: 12px; }
-  .sr-diagnostics__bubbles,
-  .sr-diagnostics__labels {
-    min-width: 480px;
-    grid-template-columns: 80px 1fr 80px 1fr 80px 1fr 80px 1fr 80px !important;
-    column-gap: 6px;
+  .sr-diagnostics__track { display: none !important; }
+
+  .sr-diagnostics__mobile-list {
+    display: flex !important;
+    flex-direction: column;
+    gap: 20px;
   }
-  .sr-diagnostics__bubble {
-    width: 80px !important;
-    height: 80px !important;
+
+  .sr-diagnostics__mobile-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
   }
-  .sr-diagnostics__step-icon { width: 40px !important; height: 40px !important; }
-  .sr-diagnostics__num { width: 30px !important; height: 30px !important; }
-  .sr-diagnostics__num-inner { width: 24px !important; height: 24px !important; font-size: 10px !important; }
-  .sr-diagnostics__label { font-size: 10px !important; width: auto !important; margin-left: 0 !important; }
+
+  .sr-diagnostics__mobile-icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #efefef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sr-diagnostics__mobile-icon .sr-diagnostics__num {
+    width: 26px;
+    height: 26px;
+    top: -2px;
+    left: -2px;
+  }
+  .sr-diagnostics__mobile-icon .sr-diagnostics__num-inner {
+    width: 20px;
+    height: 20px;
+    font-size: 9px;
+  }
+  .sr-diagnostics__mobile-icon .sr-diagnostics__step-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .sr-diagnostics__mobile-label {
+    padding-top: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: #000;
+    text-transform: none;
+  }
 
   /* ── Parts promo ── */
   .parts-promo { padding: 0; }
@@ -4497,6 +4573,33 @@ button {
 
 .floating-cart__order-btn:disabled {
   opacity: 0.6;
+}
+
+.floating-cart__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.floating-cart__input {
+  height: 40px;
+  border: 1px solid var(--divider);
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 13px;
+  color: var(--navy);
+}
+
+.floating-cart__input:focus {
+  border-color: var(--blue);
+}
+
+.floating-cart__error {
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 @media (max-width: 480px) {

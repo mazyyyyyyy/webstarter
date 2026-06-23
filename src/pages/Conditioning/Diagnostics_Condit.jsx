@@ -106,6 +106,20 @@ const Diagnostics_condit = () => (
         </div>
 
       </div>
+
+      {/* Мобильная раскладка: иконка слева, текст справа, список вниз */}
+      <div className="sr-diagnostics__mobile-list">
+        {STEPS.map(s => (
+          <div className="sr-diagnostics__mobile-item" key={s.num}>
+            <div className="sr-diagnostics__mobile-icon">
+              <div className="sr-diagnostics__num"><div className="sr-diagnostics__num-inner">{s.num}</div></div>
+              <div className="sr-diagnostics__step-icon">{s.icon}</div>
+            </div>
+            <p className="sr-diagnostics__mobile-label">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
     </div>
   </section>
 )

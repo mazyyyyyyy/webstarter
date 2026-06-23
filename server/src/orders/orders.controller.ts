@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common'
+import { Controller, Post, Body, BadRequestException } from '@nestjs/common'
 import { OrdersService } from './orders.service'
 
 @Controller('orders')
@@ -6,7 +6,10 @@ export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
   @Post()
-  create(@Body() body: { items: any[]; totalPrice: number }) {
-    return this.ordersService.notify(body)
+  create(@Body() body: { items: any[]; totalPrice: number; name?: string; phone?: string }) {
+    if (!body.name?.trim() || !body.phone?.trim()) {
+      throw new BadRequestException('Имя и телефон обязательны')
+    }
+    return this.ordersService.notify({ ...body, name: body.name.trim(), phone: body.phone.trim() })
   }
 }
