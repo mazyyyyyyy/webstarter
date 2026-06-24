@@ -33,7 +33,6 @@ const Footer = () => (
           <li><Link to="/conditioning"     className="footer-col__link">Заправка кондиционеров</Link></li>
           <li><Link to="/parts"            className="footer-col__link">Запчасти</Link></li>
           <li><Link to="/branches"         className="footer-col__link">Филиалы</Link></li>
-          <li><Link to="/for-business"     className="footer-col__link">Для организаций</Link></li>
         </ul>
       </nav>
 

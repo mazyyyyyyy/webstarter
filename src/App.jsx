@@ -12,7 +12,6 @@ import Parts           from './pages/Parts/Parts'
 import Conditioning    from './pages/Conditioning/Conditioning'
 import Branches        from './pages/Branches/Branches'
 import ProductCard     from './pages/ProductCard/ProductCard'
-import ForBusiness     from './pages/ForBusiness/ForBusiness'
 
 import AdminLogin      from './pages/Admin/AdminLogin'
 import AdminPrices     from './pages/Admin/AdminPrices'
@@ -37,7 +36,6 @@ const App = () => {
           <Route path="/parts/:id"        element={<ProductCard />} />
           <Route path="/conditioning"     element={<Conditioning />} />
           <Route path="/branches"         element={<Branches />} />
-          <Route path="/for-business"     element={<ForBusiness />} />
 
           <Route path="/admin/login"       element={<AdminLogin />} />
           <Route path="/admin/prices"      element={<AdminPrices />} />
