@@ -6,7 +6,8 @@ export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
   @Post()
-  create(@Body() body: { items: any[]; totalPrice: number; name?: string; phone?: string }) {
+  create(@Body() body: { items: any[]; totalPrice: number; name?: string; phone?: string; website?: string }) {
+    if (body.website) throw new BadRequestException('Bot detected')
     if (!body.name?.trim() || !body.phone?.trim()) {
       throw new BadRequestException('Имя и телефон обязательны')
     }

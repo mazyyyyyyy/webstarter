@@ -19,6 +19,7 @@ export default function CallbackModal({ isOpen, onClose }) {
   const [branch, setBranch] = useState(branches[0])
   const [phone, setPhone] = useState('')
   const [loading, setLoading] = useState(false)
+  const [hp, setHp] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -32,8 +33,10 @@ export default function CallbackModal({ isOpen, onClose }) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          service: 'Заказать звонок',
           branch,
-          phone
+          phone,
+          website: hp,
         })
       })
 
@@ -80,6 +83,9 @@ export default function CallbackModal({ isOpen, onClose }) {
         className="callback-form"
         onSubmit={handleSubmit}
       >
+        <div style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }} aria-hidden="true">
+          <input tabIndex={-1} autoComplete="off" value={hp} onChange={e => setHp(e.target.value)} />
+        </div>
         <div className="callback-field">
           <label>Филиал</label>
 

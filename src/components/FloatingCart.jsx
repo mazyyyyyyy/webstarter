@@ -16,6 +16,7 @@ const FloatingCart = () => {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [error, setError] = useState('')
+  const [hp, setHp] = useState('')
 
   const handleOrder = async () => {
     if (!name.trim() || !phone.trim()) {
@@ -28,7 +29,7 @@ const FloatingCart = () => {
       await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items, totalPrice, name: name.trim(), phone: phone.trim() }),
+        body: JSON.stringify({ items, totalPrice, name: name.trim(), phone: phone.trim(), website: hp }),
       })
     } catch {
       // заглушка: даже если бек недоступен, считаем заказ принятым
@@ -83,6 +84,10 @@ const FloatingCart = () => {
               <div className="floating-cart__total">
                 <span>Итого:</span>
                 <span>{totalPrice.toLocaleString('ru-RU')}&nbsp;₽</span>
+              </div>
+
+              <div style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }} aria-hidden="true">
+                <input tabIndex={-1} autoComplete="off" value={hp} onChange={e => setHp(e.target.value)} />
               </div>
 
               <div className="floating-cart__contact">
