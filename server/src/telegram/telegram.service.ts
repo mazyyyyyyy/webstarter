@@ -7,9 +7,12 @@ export class TelegramService {
   private readonly token: string
   private readonly chatId: string
 
-  constructor(private config: ConfigService) {
+  private readonly threadId: string | undefined
+
+  constructor(config: ConfigService) {
     this.token = config.get<string>('TELEGRAM_BOT_TOKEN') || ''
     this.chatId = config.get<string>('TELEGRAM_CHAT_ID') || ''
+    this.threadId = config.get<string>('TELEGRAM_THREAD_ID') || undefined
   }
 
   async sendMessage(text: string): Promise<void> {
@@ -18,10 +21,13 @@ export class TelegramService {
       return
     }
     try {
+      const payload: Record<string, any> = { chat_id: this.chatId, text, parse_mode: 'HTML' }
+      if (this.threadId) payload.message_thread_id = Number(this.threadId)
+
       const res = await fetch(`https://api.telegram.org/bot${this.token}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: this.chatId, text, parse_mode: 'HTML' }),
+        body: JSON.stringify(payload),
       })
       if (!res.ok) {
         const body = await res.text()
