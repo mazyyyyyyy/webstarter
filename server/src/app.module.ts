@@ -14,7 +14,7 @@ import { CallbackModule } from './callback/callback.module'
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 5 }]),
+    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 300 }]),
     TelegramModule,
     PrismaModule,
     AuthModule,
