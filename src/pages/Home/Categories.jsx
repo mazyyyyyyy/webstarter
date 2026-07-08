@@ -30,9 +30,11 @@ const Categories = () => {
     fetch('/api/categories')
       .then(r => r.json())
       .then(data => {
-        setCats(data)
-        if (data.length > 0) setActive(data[0].id)
+        const arr = Array.isArray(data) ? data : []
+        setCats(arr)
+        if (arr.length > 0) setActive(arr[0].id)
       })
+      .catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -41,7 +43,8 @@ const Categories = () => {
     setPage(0)
     fetch(`/api/parts?categoryId=${active}`)
       .then(r => r.json())
-      .then(data => { setParts(data); setLoading(false) })
+      .then(data => { setParts(Array.isArray(data) ? data : []); setLoading(false) })
+      .catch(() => { setParts([]); setLoading(false) })
   }, [active])
 
   if (cats.length === 0) return null

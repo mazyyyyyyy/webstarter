@@ -48,7 +48,8 @@ const PartsCatalog = () => {
   useEffect(() => {
     fetch('/api/parts')
       .then(r => r.json())
-      .then(setProducts)
+      .then(data => setProducts(Array.isArray(data) ? data : []))
+      .catch(() => setProducts([]))
       .finally(() => setLoading(false))
   }, [])
 
