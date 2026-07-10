@@ -33,6 +33,9 @@ const AdminLayout = ({ children }) => {
           <Link to="/admin/categories" className={`admin-nav-link ${active('/admin/categories')}`}>
             Категории
           </Link>
+          <Link to="/admin/news" className={`admin-nav-link ${active('/admin/news')}`}>
+            Новости
+          </Link>
         </nav>
         <button className="admin-logout" onClick={logout}>
           Выйти

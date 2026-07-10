@@ -7,7 +7,68 @@ const SERVICES = [
   { key: 'conditioning', label: 'Кондиционирование' },
 ]
 
-const MAIN_COLS = ['Наименование работ', 'Стоимость', '12В до 3 кВт', '12В более 3 кВт', '24В', 'Более 140А']
+// { label, key } — key указывает на реальное поле в БД
+const SERVICE_COLS = {
+  starter: [
+    { label: 'Наименование работ', key: 'col0' },
+    { label: 'Стоимость',          key: 'col1' },
+    { label: '12В до 3 кВт',       key: 'col2' },
+    { label: '12В более 3 кВт',    key: 'col3' },
+    { label: '24В',                key: 'col4' },
+    { label: 'Более 140А',         key: 'col5' },
+  ],
+  generator: [
+    { label: 'Наименование работ', key: 'col0' },
+    { label: 'Стоимость',          key: 'col1' },
+    { label: '12В до 3 кВт',       key: 'col2' },
+    { label: '24В',                key: 'col4' },
+    { label: 'Более 140А',         key: 'col5' },
+  ],
+  conditioning: [
+    { label: 'Наименование работ', key: 'col0' },
+    { label: 'Стоимость',          key: 'col1' },
+    { label: 'Легковой',           key: 'col2' },
+    { label: 'Грузовой',           key: 'col3' },
+  ],
+}
+
+function EditRow({ row, editData, onEditChange, onSave, onCancel, saving, colKeys }) {
+  return (
+    <tr className="admin-price-row admin-price-row--editing">
+      {colKeys.map(k => (
+        <td key={k}>
+          <input
+            className="admin-cell-input"
+            value={editData[k] || ''}
+            onChange={ev => onEditChange(row.id, k, ev.target.value)}
+          />
+        </td>
+      ))}
+      <td>
+        <div className="admin-price-actions">
+          <button className="admin-btn admin-btn--sm admin-btn--primary" disabled={saving} onClick={() => onSave(row.id)}>
+            {saving ? '...' : 'Сохранить'}
+          </button>
+          <button className="admin-btn admin-btn--sm" onClick={() => onCancel(row.id)}>Отмена</button>
+        </div>
+      </td>
+    </tr>
+  )
+}
+
+function ViewRow({ row, onEdit, onDelete, colKeys }) {
+  return (
+    <tr className="admin-price-row">
+      {colKeys.map(k => <td key={k}>{row[k]}</td>)}
+      <td>
+        <div className="admin-price-actions">
+          <button className="admin-btn admin-btn--sm admin-btn--outline" onClick={() => onEdit(row)}>Изменить</button>
+          <button className="admin-btn admin-btn--sm admin-btn--danger"  onClick={() => onDelete(row.id)}>Удалить</button>
+        </div>
+      </td>
+    </tr>
+  )
+}
 
 const emptyRow = () => ({
   tableType: 'main',
@@ -25,6 +86,9 @@ export default function AdminPrices() {
   const token   = localStorage.getItem('adminToken')
   const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
 
+  const colDefs = SERVICE_COLS[service]
+  const colKeys = colDefs.map(c => c.key)
+
   useEffect(() => { load() }, [service])
 
   const load = () =>
@@ -32,6 +96,9 @@ export default function AdminPrices() {
 
   const startEdit  = row => setEditing(e => ({ ...e, [row.id]: { ...row } }))
   const cancelEdit = id  => setEditing(e => { const n = { ...e }; delete n[id]; return n })
+
+  const onEditChange = (id, key, val) =>
+    setEditing(ed => ({ ...ed, [id]: { ...ed[id], [key]: val } }))
 
   const saveRow = async id => {
     setSaving(s => ({ ...s, [id]: true }))
@@ -56,45 +123,6 @@ export default function AdminPrices() {
     setAdding(false)
     load()
   }
-
-  const colKeys = ['col0', 'col1', 'col2', 'col3', 'col4', 'col5']
-
-  const EditRow = ({ row }) => {
-    const e = editing[row.id]
-    return (
-      <tr className="admin-price-row admin-price-row--editing">
-        {colKeys.map(k => (
-          <td key={k}>
-            <input
-              className="admin-cell-input"
-              value={e[k] || ''}
-              onChange={ev => setEditing(ed => ({ ...ed, [row.id]: { ...ed[row.id], [k]: ev.target.value } }))}
-            />
-          </td>
-        ))}
-        <td>
-          <div className="admin-price-actions">
-            <button className="admin-btn admin-btn--sm admin-btn--primary" disabled={saving[row.id]} onClick={() => saveRow(row.id)}>
-              {saving[row.id] ? '...' : 'Сохранить'}
-            </button>
-            <button className="admin-btn admin-btn--sm" onClick={() => cancelEdit(row.id)}>Отмена</button>
-          </div>
-        </td>
-      </tr>
-    )
-  }
-
-  const ViewRow = ({ row }) => (
-    <tr className="admin-price-row">
-      {colKeys.map(k => <td key={k}>{row[k]}</td>)}
-      <td>
-        <div className="admin-price-actions">
-          <button className="admin-btn admin-btn--sm admin-btn--outline" onClick={() => startEdit(row)}>Изменить</button>
-          <button className="admin-btn admin-btn--sm admin-btn--danger"  onClick={() => deleteRow(row.id)}>Удалить</button>
-        </div>
-      </td>
-    </tr>
-  )
 
   return (
     <AdminLayout>
@@ -124,23 +152,38 @@ export default function AdminPrices() {
         <div className="admin-table-wrap">
           <table className="admin-table">
             <thead>
-              <tr>{MAIN_COLS.map(c => <th key={c}>{c}</th>)}<th>Действия</th></tr>
+              <tr>{colDefs.map(c => <th key={c.key}>{c.label}</th>)}<th>Действия</th></tr>
             </thead>
             <tbody>
               {rows.map(row =>
                 editing[row.id]
-                  ? <EditRow key={row.id} row={row} />
-                  : <ViewRow key={row.id} row={row} />
+                  ? <EditRow
+                      key={row.id}
+                      row={row}
+                      editData={editing[row.id]}
+                      onEditChange={onEditChange}
+                      onSave={saveRow}
+                      onCancel={cancelEdit}
+                      saving={!!saving[row.id]}
+                      colKeys={colKeys}
+                    />
+                  : <ViewRow
+                      key={row.id}
+                      row={row}
+                      onEdit={startEdit}
+                      onDelete={deleteRow}
+                      colKeys={colKeys}
+                    />
               )}
               {adding && (
                 <tr className="admin-price-row admin-price-row--editing">
-                  {colKeys.map((k, i) => (
-                    <td key={k}>
+                  {colDefs.map(c => (
+                    <td key={c.key}>
                       <input
                         className="admin-cell-input"
-                        placeholder={MAIN_COLS[i]}
-                        value={newRow[k] || ''}
-                        onChange={e => setNewRow(d => ({ ...d, [k]: e.target.value }))}
+                        placeholder={c.label}
+                        value={newRow[c.key] || ''}
+                        onChange={e => setNewRow(d => ({ ...d, [c.key]: e.target.value }))}
                       />
                     </td>
                   ))}

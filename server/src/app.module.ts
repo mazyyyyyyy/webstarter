@@ -10,6 +10,7 @@ import { CategoriesModule } from './categories/categories.module'
 import { OrdersModule } from './orders/orders.module'
 import { TelegramModule } from './telegram/telegram.module'
 import { CallbackModule } from './callback/callback.module'
+import { NewsModule } from './news/news.module'
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CallbackModule } from './callback/callback.module'
     CategoriesModule,
     OrdersModule,
     CallbackModule,
+    NewsModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })

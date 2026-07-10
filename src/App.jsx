@@ -17,6 +17,7 @@ import AdminLogin      from './pages/Admin/AdminLogin'
 import AdminPrices     from './pages/Admin/AdminPrices'
 import AdminParts      from './pages/Admin/AdminParts'
 import AdminCategories from './pages/Admin/AdminCategories'
+import AdminNews      from './pages/Admin/AdminNews'
 
 const App = () => {
   const { pathname } = useLocation()
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/admin/prices"      element={<AdminPrices />} />
           <Route path="/admin/parts"       element={<AdminParts />} />
           <Route path="/admin/categories"  element={<AdminCategories />} />
+          <Route path="/admin/news"        element={<AdminNews />} />
         </Routes>
       </main>
 

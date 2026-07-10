@@ -15,7 +15,7 @@ const PartsPromo = () => (
         </p>
         <a
           className="parts-promo__btn"
-          href="https://www.avito.ru/omsk/zapchasti_i_aksessuary/starter_12v_11_kw_chevrolet_cruze_08_opel_astra_h_z16xer_a18xerhjcorsa_d_04insignia_09m_4365364046"
+          href="https://www.avito.ru/brands/i316587407/all/zapchasti_i_aksessuary?gdlkerfdnwq=101&page_from=from_item_card&iid=4365364046&sellerId=be8b2eabaae8dbbc89b90e580dd31bb4"
           target="_blank"
           rel="noopener noreferrer"
         >

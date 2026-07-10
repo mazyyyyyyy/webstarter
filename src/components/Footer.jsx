@@ -39,10 +39,8 @@ const Footer = () => (
       <nav className="footer-col" aria-label="Запчасти">
         <p className="footer-col__heading">Запчасти</p>
         <ul className="footer-col__links">
-          <li><Link to="/parts" className="footer-col__link">Бендиксы</Link></li>
-          <li><Link to="/parts" className="footer-col__link">Генераторы</Link></li>
-          <li><Link to="/parts" className="footer-col__link">Диодные мосты</Link></li>
-          <li><Link to="/parts" className="footer-col__link">Стартеры</Link></li>
+          <li><Link to="/parts?categoryId=1" className="footer-col__link">Стартеры</Link></li>
+          <li><Link to="/parts?categoryId=3" className="footer-col__link">Генераторы</Link></li>
         </ul>
       </nav>
 

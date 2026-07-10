@@ -37,6 +37,17 @@ model Category {
   parts     Part[]
 }
 
+model News {
+  id        Int      @id @default(autoincrement())
+  title     String
+  text      String
+  day       String
+  month     String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Part {
   id            Int       @id @default(autoincrement())
   name          String

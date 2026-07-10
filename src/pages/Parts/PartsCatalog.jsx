@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
 
 const CartIcon = () => (
@@ -38,20 +38,64 @@ function getPageItems(page, total) {
 
 const PER_PAGE = 12
 
+const FilterIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="4" y1="6" x2="20" y2="6"/>
+    <line x1="8" y1="12" x2="16" y2="12"/>
+    <line x1="11" y1="18" x2="13" y2="18"/>
+  </svg>
+)
+
 const PartsCatalog = () => {
   const { addItem } = useCart()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [products, setProducts]     = useState([])
+  const [categories, setCategories] = useState([])
   const [search, setSearch]         = useState('')
   const [loading, setLoading]       = useState(true)
   const [activePage, setActivePage] = useState(1)
+  const [dropOpen, setDropOpen]     = useState(false)
+  const dropRef                     = useRef(null)
+
+  const categoryId = searchParams.get('categoryId')
+  const activeCategory = categories.find(c => String(c.id) === String(categoryId))
 
   useEffect(() => {
-    fetch('/api/parts')
+    fetch('/api/categories')
+      .then(r => r.json())
+      .then(d => setCategories(Array.isArray(d) ? d : []))
+      .catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    setLoading(true)
+    const url = categoryId ? `/api/parts?categoryId=${categoryId}` : '/api/parts'
+    fetch(url)
       .then(r => r.json())
       .then(data => setProducts(Array.isArray(data) ? data : []))
       .catch(() => setProducts([]))
       .finally(() => setLoading(false))
+  }, [categoryId])
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target)) setDropOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
   }, [])
+
+  const selectCategory = (id) => {
+    setActivePage(1)
+    setSearch('')
+    setDropOpen(false)
+    if (id != null) {
+      setSearchParams({ categoryId: String(id) })
+    } else {
+      setSearchParams({})
+    }
+  }
 
   const filtered = products.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase())
@@ -60,9 +104,7 @@ const PartsCatalog = () => {
   const totalPages = Math.ceil(filtered.length / PER_PAGE)
   const paged = filtered.slice((activePage - 1) * PER_PAGE, activePage * PER_PAGE)
 
-  const goTo = (p) => {
-    setActivePage(p)
-  }
+  const goTo = (p) => setActivePage(p)
 
   return (
     <section className="parts-catalog">
@@ -81,6 +123,43 @@ const PartsCatalog = () => {
               value={search}
               onChange={e => { setSearch(e.target.value); setActivePage(1) }}
             />
+
+            {categories.length > 0 && (
+              <div className="parts-filter" ref={dropRef}>
+                <button
+                  className={`parts-filter__btn${dropOpen ? ' parts-filter__btn--open' : ''}${activeCategory ? ' parts-filter__btn--active' : ''}`}
+                  onClick={() => setDropOpen(v => !v)}
+                >
+                  <FilterIcon />
+                  <span>{activeCategory ? activeCategory.name : 'Фильтры'}</span>
+                  <svg className="parts-filter__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                    <polyline points="6 9 12 15 18 9"/>
+                  </svg>
+                </button>
+
+                {dropOpen && (
+                  <div className="parts-filter__drop">
+                    <button
+                      className={`parts-filter__option${!categoryId ? ' parts-filter__option--active' : ''}`}
+                      onClick={() => selectCategory(null)}
+                    >
+                      {!categoryId && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                      Все категории
+                    </button>
+                    {categories.map(c => (
+                      <button
+                        key={c.id}
+                        className={`parts-filter__option${String(categoryId) === String(c.id) ? ' parts-filter__option--active' : ''}`}
+                        onClick={() => selectCategory(c.id)}
+                      >
+                        {String(categoryId) === String(c.id) && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                        {c.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 

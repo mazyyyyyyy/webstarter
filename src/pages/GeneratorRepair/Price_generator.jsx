@@ -30,7 +30,6 @@ const Price_generator = () => {
                 <th className="sr-price__th sr-price__th--service">Наименование работ</th>
                 <th className="sr-price__th">Стоимость</th>
                 <th className="sr-price__th">12В до 3 кВт</th>
-                <th className="sr-price__th">12В более 3 кВт</th>
                 <th className="sr-price__th">24В</th>
                 <th className="sr-price__th">Более 140А</th>
               </tr>
@@ -41,7 +40,6 @@ const Price_generator = () => {
                   <td className="sr-price__td sr-price__td--service">{r.col0}</td>
                   <td className="sr-price__td" data-label="Стоимость">{r.col1}</td>
                   <td className="sr-price__td" data-label="12В до 3 кВт">{r.col2}</td>
-                  <td className="sr-price__td" data-label="12В более 3 кВт">{r.col3}</td>
                   <td className="sr-price__td" data-label="24В">{r.col4}</td>
                   <td className="sr-price__td" data-label="Более 140А">{r.col5}</td>
                 </tr>
