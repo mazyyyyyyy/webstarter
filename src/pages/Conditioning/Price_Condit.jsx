@@ -28,7 +28,6 @@ const Price_condit = () => {
             <thead>
               <tr className="sr-price__head-row">
                 <th className="sr-price__th sr-price__th--service">Наименование работ</th>
-                <th className="sr-price__th">Стоимость</th>
                 <th className="sr-price__th">Легковой</th>
                 <th className="sr-price__th">Грузовой</th>
               </tr>
@@ -37,7 +36,6 @@ const Price_condit = () => {
               {mainRows.map(r => (
                 <tr key={r.id} className="sr-price__row">
                   <td className="sr-price__td sr-price__td--service">{r.col0}</td>
-                  <td className="sr-price__td" data-label="Стоимость">{r.col1}</td>
                   <td className="sr-price__td" data-label="Легковой">{r.col2}</td>
                   <td className="sr-price__td" data-label="Грузовой">{r.col3}</td>
                 </tr>

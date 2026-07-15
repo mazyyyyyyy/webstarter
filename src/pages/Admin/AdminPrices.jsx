@@ -11,7 +11,6 @@ const SERVICES = [
 const SERVICE_COLS = {
   starter: [
     { label: 'Наименование работ', key: 'col0' },
-    { label: 'Стоимость',          key: 'col1' },
     { label: '12В до 3 кВт',       key: 'col2' },
     { label: '12В более 3 кВт',    key: 'col3' },
     { label: '24В',                key: 'col4' },
@@ -19,14 +18,12 @@ const SERVICE_COLS = {
   ],
   generator: [
     { label: 'Наименование работ', key: 'col0' },
-    { label: 'Стоимость',          key: 'col1' },
-    { label: '12В до 3 кВт',       key: 'col2' },
+    { label: 'С насосом',          key: 'col2' },
     { label: '24В',                key: 'col4' },
     { label: 'Более 140А',         key: 'col5' },
   ],
   conditioning: [
     { label: 'Наименование работ', key: 'col0' },
-    { label: 'Стоимость',          key: 'col1' },
     { label: 'Легковой',           key: 'col2' },
     { label: 'Грузовой',           key: 'col3' },
   ],
