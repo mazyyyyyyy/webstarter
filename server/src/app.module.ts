@@ -5,6 +5,7 @@ import { APP_GUARD } from '@nestjs/core'
 import { PrismaModule } from './prisma/prisma.module'
 import { AuthModule } from './auth/auth.module'
 import { PricesModule } from './prices/prices.module'
+import { PriceColumnsModule } from './price-columns/price-columns.module'
 import { PartsModule } from './parts/parts.module'
 import { CategoriesModule } from './categories/categories.module'
 import { OrdersModule } from './orders/orders.module'
@@ -20,6 +21,7 @@ import { NewsModule } from './news/news.module'
     PrismaModule,
     AuthModule,
     PricesModule,
+    PriceColumnsModule,
     PartsModule,
     CategoriesModule,
     OrdersModule,

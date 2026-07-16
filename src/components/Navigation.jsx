@@ -5,6 +5,7 @@ const NAV_LINKS = [
   { to: '/',                   label: 'Главная',               end: true },
   { to: '/starter-repair',     label: 'Ремонт стартеров' },
   { to: '/generator-repair',   label: 'Ремонт генераторов' },
+  { to: '/turbo-repair',       label: 'Ремонт турбокомпрессоров' },
   { to: '/parts',              label: 'Запчасти' },
   { to: '/conditioning',       label: 'Ремонт кондиционеров' },
   { to: '/branches',           label: 'Филиалы' },

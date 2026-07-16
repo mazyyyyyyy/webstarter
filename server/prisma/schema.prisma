@@ -29,6 +29,20 @@ model PriceRow {
   updatedAt DateTime @updatedAt
 }
 
+// Конфигурация столбцов прайса для каждой услуги.
+// colKey указывает, какое поле PriceRow (col0..col5) отображает столбец.
+model PriceColumn {
+  id        Int      @id @default(autoincrement())
+  service   String   // 'starter' | 'generator' | 'turbo' | 'conditioning'
+  colKey    String   // 'col0'..'col5'
+  label     String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([service, colKey])
+}
+
 model Category {
   id        Int      @id @default(autoincrement())
   name      String

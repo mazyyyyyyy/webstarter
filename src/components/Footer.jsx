@@ -58,6 +58,9 @@ const Footer = () => (
         <p className="footer-col__contact">
           <a href="mailto:info@starterservice.ru" className="footer-col__link">info@starterservice.ru</a>
         </p>
+        <p className="footer-col__contact">
+          <Link to="/privacy" className="footer-col__link">Политика конфиденциальности</Link>
+        </p>
       </address>
 
     </div>

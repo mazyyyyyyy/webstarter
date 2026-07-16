@@ -1,6 +1,5 @@
 ﻿import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import CallbackStarterModal from './CallbackStarterModal'
+import CallbackModal from '../../components/CallbackModal'
 
 const Hero_starter = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -9,7 +8,7 @@ const Hero_starter = () => {
     <section className="hero">
       <img
         className="hero__photo"
-        src="/assets/starter_fo.png"
+        src="/assets/starter_fo.webp"
         alt=""
         aria-hidden="true"
       />
@@ -56,7 +55,8 @@ const Hero_starter = () => {
         </div>
       </div>
 
-      <CallbackStarterModal
+      <CallbackModal
+        service="Ремонт стартеров"
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />

@@ -1,5 +1,4 @@
-﻿import { Link } from 'react-router-dom'
-import CallbackCandi from './CallbackCandi'
+﻿import CallbackModal from '../../components/CallbackModal'
 import { useState } from 'react'
 
 const Hero_condit = () => {
@@ -9,7 +8,7 @@ const Hero_condit = () => {
   <section className="hero">
     <img
       className="hero__photo"
-      src="/assets/condit_fo.png"
+      src="/assets/condit_fo.webp"
       alt=""
       aria-hidden="true"
     />
@@ -48,7 +47,8 @@ const Hero_condit = () => {
       </div>
     </div>
 
-    <CallbackCandi
+    <CallbackModal
+    service="Ремонт автокондиционеров"
     isOpen={isModalOpen}
     onClose={() => setIsModalOpen(false)}
     />

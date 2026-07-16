@@ -1,6 +1,7 @@
 import { Controller, Post, Body, BadRequestException } from '@nestjs/common'
 import { Throttle } from '@nestjs/throttler'
 import { TelegramService } from '../telegram/telegram.service'
+import { CallbackDto } from './callback.dto'
 
 @Controller('callback')
 export class CallbackController {
@@ -8,7 +9,7 @@ export class CallbackController {
 
   @Post()
   @Throttle({ default: { ttl: 60_000, limit: 5 } })
-  async create(@Body() body: { service?: string; phone?: string; branch?: string; website?: string }) {
+  async create(@Body() body: CallbackDto) {
     if (body.website) throw new BadRequestException('Bot detected')
 
     const text = this.telegram.formatCallback(

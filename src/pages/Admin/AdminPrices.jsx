@@ -1,33 +1,13 @@
 import { useState, useEffect } from 'react'
 import AdminLayout from './AdminLayout'
+import { ALL_COL_KEYS, DEFAULT_COLUMNS, normalizeColumns } from '../../config/priceColumns'
 
 const SERVICES = [
   { key: 'starter',      label: 'Ремонт стартеров' },
   { key: 'generator',    label: 'Ремонт генераторов' },
+  { key: 'turbo',        label: 'Ремонт турбокомпрессоров' },
   { key: 'conditioning', label: 'Кондиционирование' },
 ]
-
-// { label, key } — key указывает на реальное поле в БД
-const SERVICE_COLS = {
-  starter: [
-    { label: 'Наименование работ', key: 'col0' },
-    { label: '12В до 3 кВт',       key: 'col2' },
-    { label: '12В более 3 кВт',    key: 'col3' },
-    { label: '24В',                key: 'col4' },
-    { label: 'Более 140А',         key: 'col5' },
-  ],
-  generator: [
-    { label: 'Наименование работ', key: 'col0' },
-    { label: 'С насосом',          key: 'col2' },
-    { label: '24В',                key: 'col4' },
-    { label: 'Более 140А',         key: 'col5' },
-  ],
-  conditioning: [
-    { label: 'Наименование работ', key: 'col0' },
-    { label: 'Легковой',           key: 'col2' },
-    { label: 'Грузовой',           key: 'col3' },
-  ],
-}
 
 function EditRow({ row, editData, onEditChange, onSave, onCancel, saving, colKeys }) {
   return (
@@ -69,12 +49,15 @@ function ViewRow({ row, onEdit, onDelete, colKeys }) {
 
 const emptyRow = () => ({
   tableType: 'main',
-  col0: '', col1: '—', col2: '', col3: '', col4: '', col5: '',
+  col0: '', col1: '', col2: '', col3: '', col4: '', col5: '',
 })
 
 export default function AdminPrices() {
   const [service,    setService]    = useState('starter')
   const [rows,       setRows]       = useState([])
+  const [columns,    setColumns]    = useState(DEFAULT_COLUMNS.starter)
+  const [savedCols,  setSavedCols]  = useState(DEFAULT_COLUMNS.starter) // для сравнения «есть ли изменения»
+  const [colsSaving, setColsSaving] = useState(false)
   const [editing,    setEditing]    = useState({})
   const [saving,     setSaving]     = useState({})
   const [adding,     setAdding]     = useState(false)
@@ -83,14 +66,63 @@ export default function AdminPrices() {
   const token   = localStorage.getItem('adminToken')
   const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
 
-  const colDefs = SERVICE_COLS[service]
-  const colKeys = colDefs.map(c => c.key)
+  const colKeys = columns.map(c => c.key)
+  const colsDirty = JSON.stringify(columns) !== JSON.stringify(savedCols)
+
+  const load = () =>
+    Promise.all([
+      fetch(`/api/price-columns/${service}`).then(r => r.json()),
+      fetch(`/api/prices/${service}`).then(r => r.json()),
+    ]).then(([cols, data]) => {
+      const normalized = normalizeColumns(cols, service)
+      setColumns(normalized)
+      setSavedCols(normalized)
+      setRows(data.filter(r => r.tableType === 'main'))
+    })
 
   useEffect(() => { load() }, [service])
 
-  const load = () =>
-    fetch(`/api/prices/${service}`).then(r => r.json()).then(data => setRows(data.filter(r => r.tableType === 'main')))
+  /* ── Управление столбцами ── */
+  const addColumn = () => {
+    const used = new Set(colKeys)
+    const free = ALL_COL_KEYS.find(k => !used.has(k))
+    if (!free) return alert('Достигнут максимум — 6 столбцов (ограничение базы данных).')
+    setColumns(c => [...c, { key: free, label: 'Новый столбец' }])
+  }
 
+  const renameColumn = (key, label) =>
+    setColumns(c => c.map(col => col.key === key ? { ...col, label } : col))
+
+  const removeColumn = (key) => {
+    if (key === columns[0].key) return // первый столбец (наименование) не удаляем
+    if (!confirm('Удалить столбец? Данные в нём перестанут отображаться.')) return
+    setColumns(c => c.filter(col => col.key !== key))
+  }
+
+  const moveColumn = (index, dir) => {
+    const target = index + dir
+    if (index === 0 || target <= 0 || target >= columns.length) return // col0 держим первым
+    setColumns(c => {
+      const next = [...c]
+      ;[next[index], next[target]] = [next[target], next[index]]
+      return next
+    })
+  }
+
+  const saveColumns = async () => {
+    setColsSaving(true)
+    await fetch(`/api/price-columns/${service}`, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({ columns: columns.map(c => ({ colKey: c.key, label: c.label })) }),
+    })
+    setColsSaving(false)
+    await load()
+  }
+
+  const resetColumns = () => setColumns(savedCols)
+
+  /* ── Строки прайса ── */
   const startEdit  = row => setEditing(e => ({ ...e, [row.id]: { ...row } }))
   const cancelEdit = id  => setEditing(e => { const n = { ...e }; delete n[id]; return n })
 
@@ -132,13 +164,56 @@ export default function AdminPrices() {
           <button
             key={s.key}
             className={`admin-tab ${service === s.key ? 'admin-tab--active' : ''}`}
-            onClick={() => { setService(s.key); setEditing({}) }}
+            onClick={() => { setService(s.key); setEditing({}); setAdding(false) }}
           >
             {s.label}
           </button>
         ))}
       </div>
 
+      {/* ── Управление столбцами ── */}
+      <div className="admin-section">
+        <div className="admin-section-head">
+          <h2 className="admin-section-title">Столбцы таблицы</h2>
+          <button className="admin-btn admin-btn--outline admin-btn--sm" onClick={addColumn}>+ Добавить столбец</button>
+        </div>
+
+        <div className="admin-cols">
+          {columns.map((col, i) => (
+            <div className="admin-col-item" key={col.key}>
+              <span className="admin-col-badge">{i === 0 ? 'Наименование' : `Столбец ${i}`}</span>
+              <input
+                className="admin-cell-input"
+                value={col.label}
+                onChange={e => renameColumn(col.key, e.target.value)}
+                placeholder="Название столбца"
+              />
+              <div className="admin-col-controls">
+                <button className="admin-btn admin-btn--sm" disabled={i <= 1} onClick={() => moveColumn(i, -1)} title="Влево">←</button>
+                <button className="admin-btn admin-btn--sm" disabled={i === 0 || i === columns.length - 1} onClick={() => moveColumn(i, 1)} title="Вправо">→</button>
+                <button
+                  className="admin-btn admin-btn--sm admin-btn--danger"
+                  disabled={i === 0}
+                  onClick={() => removeColumn(col.key)}
+                  title={i === 0 ? 'Первый столбец нельзя удалить' : 'Удалить'}
+                >✕</button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {colsDirty && (
+          <div className="admin-cols-save">
+            <button className="admin-btn admin-btn--primary" disabled={colsSaving} onClick={saveColumns}>
+              {colsSaving ? 'Сохранение...' : 'Сохранить столбцы'}
+            </button>
+            <button className="admin-btn" onClick={resetColumns}>Отменить изменения</button>
+            <span className="admin-cols-hint">Не забудьте сохранить — иначе изменения столбцов не применятся.</span>
+          </div>
+        )}
+      </div>
+
+      {/* ── Строки прайса ── */}
       <div className="admin-section">
         <div className="admin-section-head">
           <h2 className="admin-section-title">Основной прайс</h2>
@@ -149,7 +224,7 @@ export default function AdminPrices() {
         <div className="admin-table-wrap">
           <table className="admin-table">
             <thead>
-              <tr>{colDefs.map(c => <th key={c.key}>{c.label}</th>)}<th>Действия</th></tr>
+              <tr>{columns.map(c => <th key={c.key}>{c.label}</th>)}<th>Действия</th></tr>
             </thead>
             <tbody>
               {rows.map(row =>
@@ -174,7 +249,7 @@ export default function AdminPrices() {
               )}
               {adding && (
                 <tr className="admin-price-row admin-price-row--editing">
-                  {colDefs.map(c => (
+                  {columns.map(c => (
                     <td key={c.key}>
                       <input
                         className="admin-cell-input"

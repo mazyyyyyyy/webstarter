@@ -1,6 +1,5 @@
 ﻿import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import CallbackGeneratorModal from './CallbackGeneratorModal'
+import CallbackModal from '../../components/CallbackModal'
 
 
 const Hero_Generator = () => {
@@ -10,7 +9,7 @@ const Hero_Generator = () => {
     <section className="hero">
       <img
         className="hero__photo"
-        src="/assets/generator_fo.png"
+        src="/assets/generator_fo.webp"
         alt=""
         aria-hidden="true"
       />
@@ -49,7 +48,8 @@ const Hero_Generator = () => {
         </div>
       </div>
 
-      <CallbackGeneratorModal
+      <CallbackModal
+      service="Ремонт генераторов"
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
       />

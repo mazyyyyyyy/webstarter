@@ -8,7 +8,7 @@ const Parts = () => (
 
     <img
       className="parts-page__hero"
-      src='/assets/avito_hero.png'
+      src='/assets/avito_hero.webp'
       alt=""
       loading="lazy"
     />

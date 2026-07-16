@@ -30,7 +30,7 @@ const Hero = ({ audience, setAudience }) => {
       <section className="hero hero--toggle">
         <img
           className="hero__photo"
-          src={isBusiness ? '/assets/imgbiz.png' : '/assets/car_fo.png'}
+          src={isBusiness ? '/assets/imgbiz.webp' : '/assets/car_fo.webp'}
           alt=""
           aria-hidden="true"
         />
