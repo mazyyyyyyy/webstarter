@@ -6,7 +6,7 @@ import { DEFAULT_COLUMNS, normalizeColumns } from '../config/priceColumns'
  * Столбцы берутся из БД (эндпоинт /price-columns/:service),
  * при их отсутствии — из DEFAULT_COLUMNS для услуги.
  */
-const PriceTable = ({ service }) => {
+const PriceTable = ({ service, hideStandNote = false }) => {
   const [rows, setRows]       = useState([])
   const [columns, setColumns] = useState(DEFAULT_COLUMNS[service] || DEFAULT_COLUMNS.starter)
   const [loading, setLoading] = useState(true)
@@ -68,8 +68,10 @@ const PriceTable = ({ service }) => {
           <p><img src="/assets/notes_ikon2.svg" width={60} alt="" />
             Расходные материалы: припой — 30р, очиститель карбюратора/тормозов — 50р, эпоксидка — 50р,
             добавляются по необходимости.</p>
-          <p><img src="/assets/notes_ikon3.svg" width={60} alt="" />
-            Проверка на стенде без ремонта не более 1 раз в месяц.</p>
+          {!hideStandNote && (
+            <p><img src="/assets/notes_ikon3.svg" width={60} alt="" />
+              Проверка на стенде без ремонта не более 1 раз в месяц.</p>
+          )}
         </div>
       </div>
     </section>
