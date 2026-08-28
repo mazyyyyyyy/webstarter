@@ -3562,6 +3562,28 @@ button {
   color: #fff;
 }
 
+.branch-card__icon--phone {
+  background: #2e9e4f;
+  color: #fff;
+}
+
+.branch-card__phone {
+  margin: 0;
+}
+
+.branch-card__phone-link {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--blue);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.branch-card__phone-link:hover {
+  color: var(--orange);
+}
+
 .branch-card__address {
   font-size: 18px;
   font-weight: 700;
@@ -5136,4 +5158,144 @@ button {
   }
   .cookie-banner__actions { justify-content: stretch; }
   .cookie-banner__btn { flex: 1; }
+}
+/* =========================================================================
+   MAX MESSENGER — кнопка «Написать в Max» в шапке и футере
+   ========================================================================= */
+.max-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.max-link__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #7c3aed;
+  color: #fff;
+}
+
+/* В футере — пилюля под кнопкой VK */
+.max-link--footer {
+  margin-top: 12px;
+  padding: 8px 16px 8px 8px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 50px;
+  color: #fff;
+  font-size: 15px;
+  width: fit-content;
+}
+
+.max-link--footer:hover {
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.max-link--footer .max-link__icon {
+  width: 34px;
+  height: 34px;
+}
+
+/* В шапке — кнопка рядом с CTA */
+.max-link--header {
+  height: 3.625rem;
+  padding: 0 1.5rem 0 0.5rem;
+  border-radius: 46.5px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.22);
+  color: var(--white);
+  font-size: 1.125rem;
+  white-space: nowrap;
+}
+
+.max-link--header:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.max-link--header .max-link__icon {
+  width: 2.625rem;
+  height: 2.625rem;
+}
+
+/* =========================================================================
+   FOOTER — реквизиты и правовая оговорка
+   ========================================================================= */
+.footer-legal {
+  grid-column: 1 / -1;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.14);
+}
+
+.footer-legal__requisites {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.footer-legal__requisites .footer-col__link {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.footer-legal__disclaimer {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  max-width: 70ch;
+}
+
+/* Мобильная шапка: Max сжимается до круглой кнопки-иконки, как CTA */
+@media (max-width: 768px) {
+  .max-link--header {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .max-link--header .max-link__icon {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+
+  .max-link--header .max-link__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* На планшетах шапка узкая — Max оставляем иконкой, чтобы не ломать строку */
+@media (max-width: 1100px) and (min-width: 769px) {
+  .max-link--header {
+    padding: 0;
+    width: 3.625rem;
+    justify-content: center;
+  }
+
+  .max-link--header .max-link__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 }

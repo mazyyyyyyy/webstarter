@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import LogoSVG from './Logo'
+import MaxLink from './MaxLink'
 
 const Footer = () => (
   <footer className="site-footer">
@@ -23,6 +24,7 @@ const Footer = () => (
           Переходите в VK
           <span className="footer-vk__arrow">→</span>
         </a>
+        <MaxLink variant="footer" />
       </div>
 
       <nav className="footer-col" aria-label="Навигация в футере">
@@ -47,7 +49,7 @@ const Footer = () => (
       <address className="footer-col" style={{ fontStyle: 'normal' }}>
         <p className="footer-col__heading">Контакты</p>
         <p className="footer-col__contact">
-          © 2020г. «Стартер Сервис»<br/>
+          © {new Date().getFullYear()}г. «Стартер Сервис»<br/>
           ул. 10 лет Октября 168/1<br/>
           ул. Дианова 23 корп. 2<br/>
           ул. 4-я Транспортная, 36А
@@ -62,6 +64,22 @@ const Footer = () => (
           <Link to="/privacy" className="footer-col__link">Политика конфиденциальности</Link>
         </p>
       </address>
+
+      <div className="footer-legal">
+        <p className="footer-legal__requisites">
+          ИП Костенко Евгений Александрович<br />
+          ИНН 550715773170 · ОГРНИП 324554300065602<br />
+          Юридический адрес: 644073, Омская область, г. Омск, ул. Дианова, д. 20/2, кв. 8<br />
+          Фактический адрес: 644009, Омская область, г. Омск, ул. 10 лет Октября, 168/1<br />
+          Телефон: <a href="tel:+79585836645" className="footer-col__link">+7 (958) 583-66-45</a>
+          {' · '}
+          E-mail: <a href="mailto:info@starterservice.ru" className="footer-col__link">info@starterservice.ru</a>
+        </p>
+        <p className="footer-legal__disclaimer">
+          Сайт носит исключительно информационный характер. Опубликованная информация
+          не является публичной офертой.
+        </p>
+      </div>
 
     </div>
   </footer>
