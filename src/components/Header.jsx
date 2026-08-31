@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import CallbackModal from './CallbackModal'
 import LogoSVG from './Logo'
-import MaxLink from './MaxLink'
 
 const PhoneIcon = () => (
   <img
@@ -29,8 +28,6 @@ const Header = () => {
         </div>
         <span className="header-contact__hours">Ежедневно с 9:00 до 18:00</span>
       </div>
-
-      <MaxLink variant="header" />
 
       <button
             className="header-cta"

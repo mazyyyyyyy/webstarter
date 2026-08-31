@@ -8,7 +8,7 @@ const Footer = () => (
 
       <div className="footer-brand">
         <div className="footer-brand__logo">
-          <LogoSVG width={300} height={72} />
+          <LogoSVG width={241} height={72} />
         </div>
         <a
           href="https://vk.com/starterservice"
@@ -24,7 +24,7 @@ const Footer = () => (
           Переходите в VK
           <span className="footer-vk__arrow">→</span>
         </a>
-        <MaxLink variant="footer" />
+        <MaxLink />
       </div>
 
       <nav className="footer-col" aria-label="Навигация в футере">

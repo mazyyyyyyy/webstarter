@@ -1536,6 +1536,20 @@ button {
 .footer-brand__starter { font-size: 22px; font-weight: 700; color: #E16314; line-height: 1.1; }
 .footer-brand__service { font-size: 22px; font-weight: 700; color: var(--white); text-transform: uppercase; line-height: 1.1; }
 
+/* Логотип и соцкнопки — вертикальной колонкой, иначе inline-flex выстраивает их в строку */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Обе кнопки одинаковой ширины — стопка смотрится ровнее */
+.footer-vk,
+.max-link--footer {
+  width: 100%;
+  max-width: 250px;
+}
+
 /* ─── VK BUTTON ─── */
 .footer-vk {
   display: inline-flex;
@@ -1551,7 +1565,6 @@ button {
   font-weight: 600;
   text-decoration: none;
   transition: background 0.2s, border-color 0.2s;
-  width: fit-content;
 }
 .footer-vk:hover {
   background: rgba(255,255,255,0.16);
@@ -1569,6 +1582,7 @@ button {
   color: #fff;
 }
 .footer-vk__arrow {
+  margin-left: auto;
   font-size: 16px;
   opacity: 0.7;
   transition: transform 0.2s;
@@ -3510,9 +3524,11 @@ button {
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
 }
 
+/* Ширина согласована с высотой карточки (3 строки инфо), иначе object-fit:cover
+   слишком сильно подрезает фото по бокам и оно выглядит сплющенным */
 .branch-card__img-wrap {
-  width: 160px;
-  min-width: 160px;
+  width: 230px;
+  min-width: 230px;
   flex-shrink: 0;
   overflow: hidden;
   background: #f0f2f8;
@@ -3539,6 +3555,16 @@ button {
   display: flex;
   align-items: flex-start;
   gap: 12px;
+}
+
+/* Строка в одну строчку текста — иконку центрируем по вертикали */
+.branch-card__row--center {
+  align-items: center;
+}
+
+/* Сдвиг на 1px нужен только при выравнивании по верху */
+.branch-card__row--center .branch-card__icon {
+  margin-top: 0;
 }
 
 .branch-card__icon {
@@ -3617,8 +3643,18 @@ button {
   }
 
   .branch-card__img-wrap {
-    width: 110px;
-    min-width: 110px;
+    width: 130px;
+    min-width: 130px;
+  }
+
+  .branch-card__info {
+    padding: 18px 20px;
+    gap: 12px;
+  }
+
+  .branch-card__phone-link,
+  .branch-card__address {
+    font-size: 16px;
   }
 }
 
@@ -5190,7 +5226,6 @@ button {
   border-radius: 50px;
   color: #fff;
   font-size: 15px;
-  width: fit-content;
 }
 
 .max-link--footer:hover {
@@ -5203,25 +5238,16 @@ button {
   height: 34px;
 }
 
-/* В шапке — кнопка рядом с CTA */
-.max-link--header {
-  height: 3.625rem;
-  padding: 0 1.5rem 0 0.5rem;
-  border-radius: 46.5px;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.22);
-  color: var(--white);
-  font-size: 1.125rem;
-  white-space: nowrap;
+.max-link__arrow {
+  margin-left: auto;
+  font-size: 16px;
+  opacity: 0.7;
+  transition: transform 0.2s, opacity 0.2s;
 }
 
-.max-link--header:hover {
-  background: rgba(255,255,255,0.2);
-}
-
-.max-link--header .max-link__icon {
-  width: 2.625rem;
-  height: 2.625rem;
+.max-link--footer:hover .max-link__arrow {
+  transform: translateX(3px);
+  opacity: 1;
 }
 
 /* =========================================================================
@@ -5253,49 +5279,4 @@ button {
   color: rgba(255,255,255,0.5);
   line-height: 1.6;
   max-width: 70ch;
-}
-
-/* Мобильная шапка: Max сжимается до круглой кнопки-иконки, как CTA */
-@media (max-width: 768px) {
-  .max-link--header {
-    width: 48px;
-    height: 48px;
-    padding: 0;
-    border-radius: 50%;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .max-link--header .max-link__icon {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-  }
-
-  .max-link--header .max-link__label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-  }
-}
-
-/* На планшетах шапка узкая — Max оставляем иконкой, чтобы не ломать строку */
-@media (max-width: 1100px) and (min-width: 769px) {
-  .max-link--header {
-    padding: 0;
-    width: 3.625rem;
-    justify-content: center;
-  }
-
-  .max-link--header .max-link__label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-  }
 }

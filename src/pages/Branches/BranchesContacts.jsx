@@ -11,19 +11,19 @@ const ClockIcon = () => (
 )
 
 const PhoneIcon = () => (
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" fill="currentColor"/>
   </svg>
 )
 
-// Телефон единый для всех филиалов
-const PHONE = { href: 'tel:+79585836645', label: '+7 (958) 583-66-45' }
-
+// У каждого филиала свой номер
 const BRANCHES = [
   {
     id: 1,
     address: 'Дианова, 23 к.2',
     note: 'вход со стороны ул. Дергачева',
+    phone: '+7 (991) 777-29-82',
+    phoneHref: 'tel:+79917772982',
     img: '/assets/branch_dianova.jpg',
     imgAlt: 'Филиал на Дианова, 23 к.2',
   },
@@ -31,6 +31,8 @@ const BRANCHES = [
     id: 2,
     address: 'ул. 10 лет Октября, 168/1',
     note: null,
+    phone: '+7 (991) 777-29-83',
+    phoneHref: 'tel:+79917772983',
     img: '/assets/branch_oktyabrya.jpg',
     imgAlt: 'Филиал на улице 10 лет Октября, 168/1',
   },
@@ -38,6 +40,8 @@ const BRANCHES = [
     id: 3,
     address: '4-я Транспортная улица, 36А',
     note: null,
+    phone: '+7 (991) 777-29-81',
+    phoneHref: 'tel:+79917772981',
     img: '/assets/branch_transportnaya.jpg',
     imgAlt: 'Филиал на 4-й Транспортной улице, 36А',
   },
@@ -62,7 +66,8 @@ const BranchesContacts = () => (
             </div>
 
             <div className="branch-card__info">
-              <div className="branch-card__row">
+              {/* Без примечания адрес в одну строку — центрируем, иначе выравниваем по верху */}
+              <div className={`branch-card__row${branch.note ? '' : ' branch-card__row--center'}`}>
                 <span className="branch-card__icon branch-card__icon--pin">
                   <PinIcon />
                 </span>
@@ -74,13 +79,13 @@ const BranchesContacts = () => (
                 </div>
               </div>
 
-              <div className="branch-card__row">
+              <div className="branch-card__row branch-card__row--center">
                 <span className="branch-card__icon branch-card__icon--phone">
                   <PhoneIcon />
                 </span>
                 <p className="branch-card__phone">
-                  <a href={PHONE.href} className="branch-card__phone-link">
-                    {PHONE.label}
+                  <a href={branch.phoneHref} className="branch-card__phone-link">
+                    {branch.phone}
                   </a>
                 </p>
               </div>
