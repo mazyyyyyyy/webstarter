@@ -2452,7 +2452,57 @@ button {
     display: flex;
     gap: 32px;
     box-shadow: 0 11px 11.1px 3px rgba(0, 0, 0, 0.09);
-    
+
+}
+
+/* ── SEO-текст над футером посадочных страниц ── */
+.seo-text {
+  padding: 0 0 80px;
+  background: var(--white);
+}
+
+.seo-text__body {
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(0,0,0,.75);
+}
+
+.seo-text__body h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--blue);
+  line-height: 1.3;
+  margin: 0 0 14px;
+}
+
+.seo-text__body p { margin: 0 0 12px; }
+
+.seo-text__body ul,
+.seo-text__body ol {
+  margin: 0 0 12px;
+  padding-left: 24px;
+}
+
+.seo-text__body ul { list-style: disc; }
+.seo-text__body ol { list-style: decimal; }
+
+.seo-text__body li { margin-bottom: 6px; }
+
+.seo-text__body li::marker { color: var(--orange); font-weight: 700; }
+
+.seo-text__body strong { font-weight: 700; color: rgba(0,0,0,.85); }
+
+.seo-text__body hr {
+  border: none;
+  border-top: 1px solid rgba(34,65,113,.15);
+  margin: 28px 0;
+}
+
+@media (max-width: 768px) {
+  .seo-text { padding-bottom: 48px; }
+  .seo-text__body { font-size: 15px; }
+  .seo-text__body h2 { font-size: 19px; }
+  .seo-text__body hr { margin: 20px 0; }
 }
 
 

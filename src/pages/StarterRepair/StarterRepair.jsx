@@ -4,6 +4,7 @@ import Symptoms         from './Symptoms'
 import Services         from './Services'
 import Diagnostics      from './Diagnostics'
 import Price            from './Price'
+import SeoText_starter  from './SeoText_starter'
 
 const StarterRepair = () => (
   <>
@@ -13,6 +14,7 @@ const StarterRepair = () => (
     <Services />
     <Diagnostics />
     <Price />
+    <SeoText_starter />
   </>
 )
 

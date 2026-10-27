@@ -4,6 +4,7 @@ import Symptoms_generator from './Symptoms_generator'
 import Services_generator from './Services_generator'
 import Diagnostick_generator from './Diagnostick_generator'
 import Price_generator from './Price_generator'
+import SeoText_generator from './SeoText_generator'
 
 const GeneratorRepair = () => (
   <>
@@ -13,6 +14,7 @@ const GeneratorRepair = () => (
   <Services_generator/>
   <Diagnostick_generator/>
   <Price_generator/>
+  <SeoText_generator/>
 
   </>
 )

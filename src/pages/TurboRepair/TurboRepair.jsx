@@ -4,6 +4,7 @@ import Symptoms         from './Symptoms'
 import Services         from './Services'
 import Diagnostics      from './Diagnostics'
 import Price            from './Price'
+import SeoText_turbo    from './SeoText_turbo'
 
 const TurboRepair = () => (
   <>
@@ -13,6 +14,7 @@ const TurboRepair = () => (
     <Services />
     <Diagnostics />
     <Price />
+    <SeoText_turbo />
   </>
 )
 
